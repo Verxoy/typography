@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB to CMYK Конвертер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="color-converter-module" id="colorConverterModule">
+        <div class="module-header">
+            <h2>Посмотрите, как цвета будут выглядеть в печати</h2>
+            <p>Выберите цвет или загрузите макет, чтобы увидеть разницу между экраном и печатью</p>
+        </div>
+
+        <div class="converter-grid">
+
+            <div class="converter-window" id="windowLeft">
+                <div class="window-header">
+                    <div class="window-title">Исходный цвет</div>
+                    <div class="window-badge">RGB</div>
+                </div>
+
+                <div class="mode-section color-mode active">
+                    <div class="color-picker-section">
+                        <div class="color-picker-wrapper">
+                            <input type="color" class="color-picker-input" value="#EB811C" id="colorPickerLeft">
+                            <div class="color-display-box" id="colorDisplayLeft" style="background: #EB811C;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mode-section image-mode">
+                    <div class="image-upload-section">
+                        <span class="image-upload-caption">
+                            Перетащите изображение сюда или нажмите для загрузки
+                        </span>
+                        <label class="image-upload-label" for="imageUploadLeft" id="imageLabelLeft">
+                            <span class="label-text-full">📎 Перетащите изображение сюда или нажмите для загрузки</span>
+                            <span class="label-text-studio">📎 Выберите файл</span>
+                        </label>
+                        <input type="file" class="image-upload-input" id="imageUploadLeft" accept="image/*">
+                        <button type="button" class="clear-image-btn" id="clearImageBtn" hidden>
+                            Очистить
+                        </button>
+                    </div>
+                    <div class="image-preview">
+                        <canvas id="canvasLeft"></canvas>
+                        <div class="image-preview-placeholder" id="placeholderLeft">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.27l-1.41 1.41 3.41 3.41 1.41-1.41 5-6.41L15.14 8.86z"/>
+                            </svg>
+                            <div>Изображение появится здесь</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-values" id="valuesLeft">
+                    <strong>RGB:</strong> R: 235, G: 129, B: 28<br>
+                    <strong>HEX:</strong> #EB811C
+                </div>
+            </div>
+
+            <div class="converter-window" id="windowRight">
+                <div class="window-header">
+                    <div class="window-title">Результат печати</div>
+                    <div class="window-badge cmyk">CMYK</div>
+                </div>
+
+                <div class="mode-section color-mode active">                  
+                    <div class="color-picker-section">
+                        <div class="color-picker-wrapper">
+                            <input type="color" class="color-picker-input" value="#EB811C" id="colorPickerRight" disabled>
+                            <div class="color-display-box" id="colorDisplayRight" style="background: #EB811C;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mode-section image-mode">
+                    <div class="paper-type-selector">
+                        <label>Тип бумаги:</label>
+                        <select id="paperType">
+                            <option value="coated">Мелованная (Coated) - FOGRA39</option>
+                            <option value="uncoated">Немелованная (Uncoated) - FOGRA47</option>
+                        </select>
+                        <span id="paperStatus"></span>
+                    </div>
+                    <div class="image-preview">
+                        <canvas id="canvasRight"></canvas>
+                        <div class="image-preview-placeholder" id="placeholderRight">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.27l-1.41 1.41 3.41 3.41 1.41-1.41 5-6.41L15.14 8.86z"/>
+                            </svg>
+                            <div>Результат появится здесь</div>
+                        </div>
+                    </div>
+                    <button class="download-btn" id="downloadImageBtn" disabled>
+                        Скачать изображение (CMYK)
+                    </button>
+                </div>
+
+                <div class="color-values" id="valuesRight">
+                    <strong>CMYK (ICC):</strong> —<br>
+                    <strong>Превью печати:</strong> —
+                </div>
+            </div>
+        </div>
+
+        <div class="converter-disclaimer">
+            <strong>Важно:</strong> Это визуальная аппроксимация. Фактический результат печати может отличаться в зависимости от оборудования, типа бумаги и калибровки. Для точного соответствия цвета рекомендуется заказать тестовый оттиск.
+        </div>
+    </div>
+
+    <script>
+    function resolveApiUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const fromQuery = params.get('api');
+        if (fromQuery) {
+            return fromQuery.replace(/\/$/, '');
+        }
+        if (params.get('studio') === '1') {
+            return `${window.location.origin}/graphics-icc`;
+        }
+        return 'http://127.0.0.1:5000';
+    }
+
+    const API_URL = resolveApiUrl();
+    let currentProfile = 'coated';
+    let iccServerReady = false;
+
+    function layoutStudioMode() {
+        document.body.classList.add('studio-embed');
+
+        const leftTitle = document.querySelector('#windowLeft .window-title');
+        const rightTitle = document.querySelector('#windowRight .window-title');
+        if (leftTitle) leftTitle.textContent = 'Исходный макет';
+        if (rightTitle) rightTitle.textContent = 'Результат для печати';
+
+        const grid = document.querySelector('.converter-grid');
+        const downloadBtn = document.getElementById('downloadImageBtn');
+        if (!grid || !downloadBtn || document.querySelector('.studio-download-footer')) return;
+
+        const footer = document.createElement('div');
+        footer.className = 'studio-download-footer';
+        footer.appendChild(downloadBtn);
+        grid.insertAdjacentElement('afterend', footer);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (new URLSearchParams(window.location.search).get('studio') === '1') {
+            layoutStudioMode();
+        }
+
+        initConverter();
+        checkServerHealth();
+
+        const paperType = document.getElementById('paperType');
+        if (paperType) {
+            paperType.addEventListener('change', function() {
+                currentProfile = this.value;
+                const statusSpan = document.getElementById('paperStatus');
+                if (statusSpan) statusSpan.textContent = '🔄 пересчёт...';
+
+                const leftPicker = document.getElementById('colorPickerLeft');
+                if (leftPicker) {
+                    convertColorWithICC(leftPicker.value);
+                }
+
+                if (window.currentImageFile) {
+                    handleImageUploadICC(window.currentImageFile);
+                }
+            });
+        }
+    });
+
+    function checkServerHealth() {
+        fetch(`${API_URL}/health`)
+            .then(response => response.json())
+            .then(data => {
+                iccServerReady = Boolean(data.littlecms_supported);
+                console.log('✅ Бэкенд доступен, ICC:', iccServerReady);
+                const statusSpan = document.getElementById('paperStatus');
+                if (!statusSpan) return;
+                if (iccServerReady) {
+                    statusSpan.textContent = isStudioMode() ? 'ICC профиль' : '✅ ICC активен';
+                    const leftPicker = document.getElementById('colorPickerLeft');
+                    if (leftPicker) {
+                        convertColorWithICC(leftPicker.value);
+                    }
+                } else {
+                    statusSpan.innerHTML = '⚠️ ICC не поддерживается';
+                }
+            })
+            .catch(error => {
+                iccServerReady = false;
+                console.error('❌ Бэкенд недоступен:', error);
+                const statusSpan = document.getElementById('paperStatus');
+                if (statusSpan) {
+                    statusSpan.innerHTML = isStudioMode()
+                        ? '⚠️ ICC-сервер недоступен'
+                        : '⚠️ бэкенд не запущен';
+                }
+            });
+    }
+
+    function showStudioIccUnavailable(message) {
+        const statusSpan = document.getElementById('paperStatus');
+        if (statusSpan) statusSpan.innerHTML = '⚠️ ICC-сервер недоступен';
+
+        const rightValues = document.getElementById('valuesRight');
+        if (rightValues && isStudioMode()) {
+            rightValues.innerHTML =
+                `<strong>CMYK (ICC):</strong> —<br>` +
+                `<span style="color:#e65100;">${message}</span>`;
+        }
+    }
+
+    async function fetchIccColorOutput(rgb, profile) {
+        const response = await fetch(`${API_URL}/convert-color-icc`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                r: rgb.r,
+                g: rgb.g,
+                b: rgb.b,
+                profile: profile || currentProfile,
+            }),
+        });
+
+        const data = await response.json();
+        if (!response.ok || data.error) {
+            throw new Error(data.error || 'ICC color conversion failed');
+        }
+        return data.output;
+    }
+
+    async function fetchIccImagePreviewBlob(file, profile) {
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('profile', profile || currentProfile);
+
+        const response = await fetch(`${API_URL}/convert-image-icc`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            let message = 'ICC image conversion failed';
+            try {
+                const err = await response.json();
+                if (err.error) message = err.error;
+            } catch (_) { /* blob response */ }
+            throw new Error(message);
+        }
+
+        return response.blob();
+    }
+
+    function initConverter() {
+        setupColorPickers();
+        setupImageUpload();
+        setupDownloadButtons();
+        setupClearImage();
+    }
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) {
+            hex = hex.split('').map(c => c + c).join('');
+        }
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return { r, g, b };
+    }
+    
+    function rgbToHex(r, g, b) {
+        return '#' + 
+            r.toString(16).padStart(2, '0') + 
+            g.toString(16).padStart(2, '0') + 
+            b.toString(16).padStart(2, '0');
+    }
+    
+    function rgbToCmykSimple(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        let k = 1 - Math.max(r, g, b);
+        if (k === 1) return { c: 0, m: 0, y: 0, k: 100 };
+        const c = (1 - r - k) / (1 - k);
+        const m = (1 - g - k) / (1 - k);
+        const y = (1 - b - k) / (1 - k);
+        const round1 = (n) => Math.round(n * 1000) / 10;
+        return {
+            c: round1(c * 100),
+            m: round1(m * 100),
+            y: round1(y * 100),
+            k: round1(k * 100)
+        };
+    }
+
+    function cmykToRgbApprox(c, m, y, k) {
+        return {
+            r: Math.round(255 * (1 - c) * (1 - k)),
+            g: Math.round(255 * (1 - m) * (1 - k)),
+            b: Math.round(255 * (1 - y) * (1 - k))
+        };
+    }
+
+    function isStudioMode() {
+        return document.body.classList.contains('studio-embed');
+    }
+
+    function drawScaledToCanvas(canvas, img, maxDisplayWidth) {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDisplayWidth) {
+            const scale = maxDisplayWidth / width;
+            width = maxDisplayWidth;
+            height = height * scale;
+        }
+
+        width = Math.round(width);
+        height = Math.round(height);
+
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        canvas.style.display = 'block';
+
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        return { width, height };
+    }
+
+    async function convertColorWithICC(hex) {
+        const rgb = hexToRgb(hex);
+        const statusSpan = document.getElementById('paperStatus');
+
+        if (isStudioMode()) {
+            if (statusSpan) statusSpan.textContent = '🔄 ICC…';
+        }
+
+        try {
+            const output = await fetchIccColorOutput(rgb, currentProfile);
+            updateRightWindow(output);
+            if (statusSpan) statusSpan.textContent = 'ICC профиль';
+            iccServerReady = true;
+            return;
+        } catch (error) {
+            console.error('ICC color error:', error);
+        }
+
+        if (isStudioMode()) {
+            showStudioIccUnavailable(
+                'Запустите ICC-сервер: .\\scripts\\run-graphics-module.ps1',
+            );
+            return;
+        }
+
+        const cmyk = rgbToCmykSimple(rgb.r, rgb.g, rgb.b);
+        const cPercent = Math.round(cmyk.c);
+        const mPercent = Math.round(cmyk.m);
+        const yPercent = Math.round(cmyk.y);
+        const kPercent = Math.round(cmyk.k);
+
+        const rgbPreview = simulatePrintAppearance(rgb.r, rgb.g, rgb.b);
+        const hexPreview = rgbToHex(rgbPreview.r, rgbPreview.g, rgbPreview.b);
+
+        updateRightWindowFallback(cPercent, mPercent, yPercent, kPercent, rgbPreview, hexPreview);
+
+        if (statusSpan) statusSpan.innerHTML = '⚠️ простая формула';
+    }
+
+    function updateRightWindow(output) {
+        const { cmyk, preview_rgb, preview_hex } = output;
+        const rightValues = document.getElementById('valuesRight');
+        const rightDisplay = document.getElementById('colorDisplayRight');
+        const rightPicker = document.getElementById('colorPickerRight');
+        
+        rightPicker.value = preview_hex;
+        rightDisplay.style.background = preview_hex;
+        rightValues.innerHTML = `
+            <strong>CMYK (ICC):</strong> C: ${cmyk.c}%, M: ${cmyk.m}%, Y: ${cmyk.y}%, K: ${cmyk.k}%<br>
+            <strong>Превью печати:</strong> R: ${preview_rgb.r}, G: ${preview_rgb.g}, B: ${preview_rgb.b}
+        `;
+        
+        const totalInk = cmyk.c + cmyk.m + cmyk.y + cmyk.k;
+        if (totalInk > 240) {
+            rightValues.innerHTML += `<div style="color:#e74c3c; margin-top:8px;">⚠️ Сумма чернил: ${totalInk}%</div>`;
+        }
+    }
+
+    function updateRightWindowFallback(c, m, y, k, rgbPreview, hexPreview) {
+        const rightValues = document.getElementById('valuesRight');
+        const rightDisplay = document.getElementById('colorDisplayRight');
+        const rightPicker = document.getElementById('colorPickerRight');
+        
+        rightPicker.value = hexPreview;
+        rightDisplay.style.background = hexPreview;
+        rightValues.innerHTML = `
+            <strong>CMYK (простая):</strong> C: ${c}%, M: ${m}%, Y: ${y}%, K: ${k}%<br>
+            <strong>Превью печати:</strong> R: ${rgbPreview.r}, G: ${rgbPreview.g}, B: ${rgbPreview.b}
+        `;
+    }
+
+    function setupColorPickers() {
+        const leftPicker = document.getElementById('colorPickerLeft');
+        const leftDisplay = document.getElementById('colorDisplayLeft');
+        const leftValues = document.getElementById('valuesLeft');
+        
+        leftPicker.addEventListener('input', function() {
+            const hex = this.value;
+            const rgb = hexToRgb(hex);
+            
+            leftDisplay.style.background = hex;
+            leftValues.innerHTML = `
+                <strong>RGB:</strong> R: ${rgb.r}, G: ${rgb.g}, B: ${rgb.b}<br>
+                <strong>HEX:</strong> ${hex.toUpperCase()}
+            `;
+            
+            convertColorWithICC(hex);
+        });
+        
+        leftPicker.dispatchEvent(new Event('input'));
+    }
+
+    let currentImageFile = null;
+    window.currentImageFile = null;
+
+    function setupClearImage() {
+        const clearBtn = document.getElementById('clearImageBtn');
+        if (!clearBtn) return;
+        clearBtn.addEventListener('click', clearUploadedImage);
+    }
+
+    function clearUploadedImage() {
+        currentImageFile = null;
+        window.currentImageFile = null;
+
+        const canvasLeft = document.getElementById('canvasLeft');
+        const canvasRight = document.getElementById('canvasRight');
+        const placeholderLeft = document.getElementById('placeholderLeft');
+        const placeholderRight = document.getElementById('placeholderRight');
+        const leftInput = document.getElementById('imageUploadLeft');
+        const downloadBtn = document.getElementById('downloadImageBtn');
+        const clearBtn = document.getElementById('clearImageBtn');
+
+        [canvasLeft, canvasRight].forEach(function (canvas) {
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = 0;
+            canvas.height = 0;
+            canvas.style.display = 'none';
+            canvas.style.width = '';
+            canvas.style.height = '';
+        });
+
+        if (placeholderLeft) placeholderLeft.style.display = '';
+        if (placeholderRight) placeholderRight.style.display = '';
+
+        if (leftInput) leftInput.value = '';
+        if (downloadBtn) downloadBtn.disabled = true;
+        if (clearBtn) clearBtn.hidden = true;
+    }
+
+    function showClearImageButton() {
+        const clearBtn = document.getElementById('clearImageBtn');
+        if (clearBtn) clearBtn.hidden = false;
+    }
+
+    function setupImageUpload() {
+        const leftInput = document.getElementById('imageUploadLeft');
+        const leftLabel = document.getElementById('imageLabelLeft');
+        
+        leftLabel.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            leftLabel.classList.add('drag-over');
+        });
+        
+        leftLabel.addEventListener('dragleave', () => {
+            leftLabel.classList.remove('drag-over');
+        });
+        
+        leftLabel.addEventListener('drop', (e) => {
+            e.preventDefault();
+            leftLabel.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) {
+                leftInput.files = e.dataTransfer.files;
+                handleImageUploadICC(leftInput.files[0]);
+            }
+        });
+        
+        leftInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleImageUploadICC(e.target.files[0]);
+            }
+        });
+    }
+
+    function finalizeImagePreview() {
+        const canvasLeft = document.getElementById('canvasLeft');
+        const canvasRight = document.getElementById('canvasRight');
+        const placeholderLeft = document.getElementById('placeholderLeft');
+        const placeholderRight = document.getElementById('placeholderRight');
+        const downloadBtn = document.getElementById('downloadImageBtn');
+
+        if (placeholderLeft) placeholderLeft.style.display = 'none';
+        if (placeholderRight) placeholderRight.style.display = 'none';
+
+        if (canvasLeft?.parentElement) canvasLeft.parentElement.style.height = 'auto';
+        if (canvasRight?.parentElement) canvasRight.parentElement.style.height = 'auto';
+
+        if (downloadBtn) downloadBtn.disabled = false;
+        showClearImageButton();
+    }
+
+    async function handleImageUploadStudioIcc(file) {
+        const canvasLeft = document.getElementById('canvasLeft');
+        const canvasRight = document.getElementById('canvasRight');
+        const statusSpan = document.getElementById('paperStatus');
+        const maxDisplayWidth = 500;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = async function() {
+                drawScaledToCanvas(canvasLeft, img, maxDisplayWidth);
+
+                try {
+                    if (statusSpan) statusSpan.textContent = '🔄 ICC-конвертация…';
+
+                    const blob = await fetchIccImagePreviewBlob(file, currentProfile);
+                    const previewImg = new Image();
+                    previewImg.onload = function() {
+                        drawScaledToCanvas(canvasRight, previewImg, maxDisplayWidth);
+                        if (statusSpan) statusSpan.textContent = 'ICC профиль';
+                        iccServerReady = true;
+                        finalizeImagePreview();
+                        URL.revokeObjectURL(previewImg.src);
+                    };
+                    previewImg.onerror = function() {
+                        if (statusSpan) statusSpan.innerHTML = '⚠️ ошибка превью ICC';
+                    };
+                    previewImg.src = URL.createObjectURL(blob);
+                } catch (error) {
+                    console.error(error);
+                    showStudioIccUnavailable(
+                        'Для конвертации макета запустите ICC-сервер: .\\scripts\\run-graphics-module.ps1',
+                    );
+                }
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function handleImageUploadICC(file) {
+        if (!file || !file.type.match('image.*')) {
+            alert('Пожалуйста, выберите изображение');
+            return;
+        }
+        
+        currentImageFile = file;
+        window.currentImageFile = file;
+
+        if (isStudioMode()) {
+            void handleImageUploadStudioIcc(file);
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvasLeft = document.getElementById('canvasLeft');
+                const canvasRight = document.getElementById('canvasRight');
+
+                const maxDisplayWidth = 500;
+                const { width, height } = drawScaledToCanvas(canvasLeft, img, maxDisplayWidth);
+
+                drawScaledToCanvas(canvasRight, img, maxDisplayWidth);
+
+                const imageData = canvasRight.getContext('2d').getImageData(0, 0, width, height);
+                const data = imageData.data;
+                
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    const corrected = simulatePrintAppearance(r, g, b);
+                    data[i] = corrected.r;
+                    data[i + 1] = corrected.g;
+                    data[i + 2] = corrected.b;
+                }
+                
+                canvasRight.getContext('2d').putImageData(imageData, 0, 0);
+
+                const statusSpan = document.getElementById('paperStatus');
+                if (statusSpan) statusSpan.innerHTML = 'простая формула';
+
+                finalizeImagePreview();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function simulatePrintAppearance(r, g, b) {
+        const hsl = rgbToHsl(r, g, b);
+        hsl.s = Math.max(0, hsl.s - 0.25);
+        hsl.l = Math.max(0, hsl.l * 0.88);
+        if (hsl.h > 0.55 && hsl.h < 0.75) {
+            hsl.s = Math.max(0, hsl.s - 0.15);
+            hsl.l = Math.max(0, hsl.l * 0.92);
+        }
+        return hslToRgb(hsl.h, hsl.s, hsl.l);
+    }
+    
+    function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) {
+            h = s = 0;
+        } else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        return { h, s, l };
+    }
+    
+    function hslToRgb(h, s, l) {
+        let r, g, b;
+        if (s === 0) {
+            r = g = b = l;
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1/3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1/3);
+        }
+        return {
+            r: Math.round(r * 255),
+            g: Math.round(g * 255),
+            b: Math.round(b * 255)
+        };
+    }
+
+    function setupDownloadButtons() {       
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const canvasRight = document.getElementById('canvasRight');
+        
+        downloadImageBtn.addEventListener('click', function() {
+            if (canvasRight.width === 0 || canvasRight.height === 0) {
+                alert('Сначала загрузите изображение для конвертации');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.download = `cmyk-preview-${new Date().toISOString().replace(/[:.]/g, '-')}.jpg`;
+            link.href = canvasRight.toDataURL('image/jpeg', 0.92);
+            link.click();
+        });
+    }
+    </script>
+</body>
+</html>

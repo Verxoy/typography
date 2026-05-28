@@ -66,7 +66,12 @@ const routes = [
   {
     path: '/graphic-module',
     name: 'GraphicModule',
-    component: () => import('../views/GraphicModule.vue')
+    component: () => import('../views/GraphicModule.vue'),
+  },
+  {
+    path: '/graphic-module/maket',
+    name: 'GraphicModuleMaket',
+    component: () => import('../views/GraphicModuleStudio.vue'),
   },
   {
     path: '/quick-quote',

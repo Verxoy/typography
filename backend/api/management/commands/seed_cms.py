@@ -124,11 +124,9 @@ class Command(BaseCommand):
         ):
             obj.module_title = 'Графический модуль визуализации'
             obj.save(update_fields=['module_title'])
-        if not obj.module_description:
-            obj.module_description = (
-                'Загрузите изображение для просмотра в цветовой модели CMYK '
-                'и сравните с оригиналом'
-            )
+        new_desc = 'Выберите цвет для просмотра в цветовой модели CMYK'
+        if not obj.module_description or 'Загрузите изображение для просмотра' in obj.module_description:
+            obj.module_description = new_desc
             obj.banner_text = (
                 'Мы создаем и производим любые типы календарей, а если потребуется, '
                 'разработаем для Вас уникальный макет с учетом всех Ваших пожеланий.'

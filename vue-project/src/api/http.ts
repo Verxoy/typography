@@ -45,7 +45,8 @@ function formatApiError(data: unknown, status: number): string {
 
 function getCookie(name: string): string {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
-  return match ? decodeURIComponent(match[1]) : ''
+  const value = match?.[1]
+  return value ? decodeURIComponent(value) : ''
 }
 
 let csrfReady: Promise<void> | null = null
@@ -137,4 +138,45 @@ export async function apiFetchFormData<T>(
     throw new Error(formatApiError(data, res.status))
   }
   return data as T
+}
+
+/** POST multipart → бинарный ответ (например, JPEG после CMYK-конвертации). */
+export async function apiFetchBlob(
+  path: string,
+  formData: FormData,
+  options: Omit<RequestInit, 'body'> = {},
+): Promise<Blob> {
+  const method = (options.method || 'POST').toUpperCase()
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
+  }
+  await ensureCsrf()
+  const token = getCookie('csrftoken')
+  if (token) headers['X-CSRFToken'] = token
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    method,
+    headers,
+    body: formData,
+    credentials: 'include',
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+    let data: unknown = null
+    if (text) {
+      try {
+        data = JSON.parse(text)
+      } catch {
+        data = { detail: text }
+      }
+    }
+    const obj = data as Record<string, unknown> | null
+    const message =
+      (typeof obj?.error === 'string' && obj.error) ||
+      formatApiError(data, res.status)
+    throw new Error(message)
+  }
+  return res.blob()
 }
