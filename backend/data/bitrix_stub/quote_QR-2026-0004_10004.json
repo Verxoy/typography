@@ -1,0 +1,16 @@
+{
+  "stub": true,
+  "method": "crm.lead.add",
+  "created_at": "2026-05-18T01:42:17.265752",
+  "lead_id_stub": 10004,
+  "fields": {
+    "TITLE": "Быстрый расчёт: Листовки и флаеры",
+    "NAME": "прив",
+    "PHONE": "6676687",
+    "EMAIL": "lina.verxoglyadova@gmail.com",
+    "COMMENTS": "Номер заявки: QR-2026-0004\nУслуга: Листовки и флаеры\nЮрлицо: ООО — ааааааааааа\nИНН: 5454365675\n--- Параметры ---\nquantity: многа\nformat: А6\npaper: мелованная\nfinishing: фальцовка\nurgency: Стандартный срок",
+    "SOURCE_ID": "WEB"
+  },
+  "quote_request_id": 4,
+  "public_number": "QR-2026-0004"
+}

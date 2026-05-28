@@ -1,0 +1,148 @@
+"""Структура каталога для начального наполнения БД (из vue-project/src/data/catalog.ts)."""
+
+# Фото карточек разделов на главной странице
+HOME_SECTION_IMAGES = {
+    'reklamnaya-poligrafiya': '/images/home-reklamnaya-poligrafiya.png',
+    'upakovka': '/images/home-upakovka.png',
+    'suveniry': '/images/home-suveniry.png',
+    'kalendari': '/images/home-kalendari.png',
+    'knigi': '/images/home-knigi.png',
+    'reklamnaya-produkciya-mps': '/images/home-reklama-mps.png',
+    'poligrafiya-med': '/images/home-poligrafiya-med.png',
+    'produkciya-dlya-restoranov': '/images/home-horeca.png',
+}
+
+SECTIONS = [
+    {
+        'section_id': 'reklamnaya-poligrafiya',
+        'title': 'Рекламная полиграфия',
+        'products': [
+            {'title': 'Каталоги, буклеты, брошюры', 'slug': 'katalogi-buklety-broshyury'},
+            {'title': 'Сертификаты, купоны', 'slug': 'sertifikaty-kupony'},
+            {'title': 'Плакаты, постеры, афиши', 'slug': 'plakaty-postery-afishi'},
+            {'title': 'Листовки', 'slug': 'listovki'},
+            {'title': 'Каталоги', 'slug': 'katalogi'},
+            {'title': 'Дисконтные карты', 'slug': 'diskontnye-karty'},
+        ],
+    },
+    {
+        'section_id': 'reklamnaya-produkciya-mps',
+        'title': 'Рекламная продукция на местах продаж',
+        'products': [
+            {'title': 'Шелфтокеры', 'slug': 'shelftokery'},
+            {'title': 'Ценники', 'slug': 'tsenniki'},
+            {'title': 'Хенгеры', 'slug': 'henhery'},
+            {'title': 'Кассовые блюдца (монетницы)', 'slug': 'kassovye-blyudca-monetnicy'},
+            {'title': 'Коробки под бумажные чеки', 'slug': 'korobki-pod-bumazhnye-cheki'},
+            {'title': 'Воблеры', 'slug': 'voblery'},
+        ],
+    },
+    {
+        'section_id': 'produkciya-dlya-restoranov',
+        'title': 'Продукция для ресторанов',
+        'products': [
+            {'title': 'Меню на болтах', 'slug': 'menyu-na-boltah'},
+            {'title': 'Меню с раздвижными кольцами', 'slug': 'menyu-s-razdvizhnymi-koltsami'},
+            {'title': 'Меню в твёрдом переплёте', 'slug': 'menyu-v-tverdom-pereplete'},
+            {'title': 'Меню-домик', 'slug': 'menyu-domik'},
+            {'title': 'Папки для счёта', 'slug': 'papki-dlya-scheta'},
+            {'title': 'Однолистовое меню', 'slug': 'odnolistovoe-menyu'},
+            {'title': 'Меню-подложка', 'slug': 'menyu-podlozhka'},
+            {'title': 'Меню-папка из дерева', 'slug': 'menyu-papka-iz-dereva'},
+            {'title': 'Меню-буклет', 'slug': 'menyu-buklet'},
+            {'title': 'Меню на пружине', 'slug': 'menyu-na-pruzhine'},
+            {'title': 'Меню детское', 'slug': 'menyu-detskoe'},
+            {'title': 'Меню вырубное', 'slug': 'menyu-vyrubnoe'},
+            {'title': 'Бирдекели', 'slug': 'birdekeli'},
+            {'title': 'Барное меню', 'slug': 'barnoe-menyu'},
+        ],
+    },
+    {
+        'section_id': 'kalendari',
+        'title': 'Календари',
+        'products': [
+            {'title': 'Креативные календари', 'slug': 'kreativnye-kalendari'},
+            {'title': 'Фигурные календари', 'slug': 'figurnye-kalendari'},
+            {'title': 'Календарь-пирамида', 'slug': 'kalendar-piramida'},
+            {'title': 'Календарь-куб', 'slug': 'kalendar-kub'},
+            {'title': 'Календари-книжки', 'slug': 'kalendari-knizhki'},
+            {'title': 'Календари с часами', 'slug': 'kalendari-s-chasami'},
+            {'title': 'Додэкаэдр', 'slug': 'dodekaedr'},
+            {'title': 'Календари с грифельной доской', 'slug': 'kalendari-s-grifelnoy-doskoy'},
+            {'title': 'Настольные календари'},
+            {'title': 'Настенные календари'},
+            {'title': 'Квартальные календари'},
+            {'title': 'Карманные календари'},
+        ],
+    },
+    {
+        'section_id': 'knigi',
+        'title': 'Книги',
+        'products': [
+            {'title': 'Книги на скрепке'},
+            {'title': 'Книги в твёрдой обложке'},
+            {'title': 'Книги в мягкой обложке'},
+        ],
+    },
+    {
+        'section_id': 'poligrafiya-med',
+        'title': 'Полиграфия для медучреждений',
+        'products': [
+            {'title': 'Бланки'},
+            {'title': 'Брошюры'},
+            {'title': 'Календари'},
+            {'title': 'Каталоги'},
+            {'title': 'Плакаты'},
+        ],
+    },
+    {
+        'section_id': 'upakovka',
+        'title': 'Упаковка',
+        'products': [
+            {'title': 'Коробки'},
+            {'title': 'Пакеты'},
+            {'title': 'Этикетки'},
+        ],
+    },
+    {
+        'section_id': 'suveniry',
+        'title': 'Сувениры',
+        'products': [
+            {'title': 'Блокноты'},
+            {'title': 'Ежедневники'},
+            {'title': 'Календари'},
+            {'title': 'Ручки'},
+            {'title': 'Футболки'},
+        ],
+    },
+]
+
+# Миниатюры карточек (public/catalog/)
+PRODUCT_IMAGES = {
+    'katalogi-buklety-broshyury': '/catalog/katalogi-buklety-broshyury.png',
+    'sertifikaty-kupony': '/catalog/sertifikaty-kupony.png',
+    'plakaty-postery-afishi': '/catalog/plakaty-postery-afishi.png',
+    'listovki': '/catalog/listovki.png',
+    'katalogi': '/catalog/katalogi.png',
+    'diskontnye-karty': '/catalog/diskontnye-karty.png',
+    'shelftokery': '/catalog/shelftokery.png',
+    'tsenniki': '/catalog/tsenniki.png',
+    'henhery': '/catalog/henhery.png',
+    'kassovye-blyudca-monetnicy': '/catalog/kassovye-blyudca-monetnicy.png',
+    'korobki-pod-bumazhnye-cheki': '/catalog/korobki-pod-bumazhnye-cheki.png',
+    'voblery': '/catalog/voblery.png',
+    'menyu-na-boltah': '/catalog/menyu-na-boltah.png',
+    'menyu-s-razdvizhnymi-koltsami': '/catalog/menyu-s-razdvizhnymi-koltsami.png',
+    'menyu-v-tverdom-pereplete': '/catalog/menyu-v-tverdom-pereplete.png',
+    'menyu-domik': '/catalog/menyu-domik.png',
+    'papki-dlya-scheta': '/catalog/papki-dlya-scheta.png',
+    'odnolistovoe-menyu': '/catalog/odnolistovoe-menyu.png',
+    'menyu-podlozhka': '/catalog/menyu-podlozhka.png',
+    'menyu-papka-iz-dereva': '/catalog/menyu-papka-iz-dereva.png',
+    'menyu-buklet': '/catalog/menyu-buklet.png',
+    'menyu-na-pruzhine': '/catalog/menyu-na-pruzhine.png',
+    'menyu-detskoe': '/catalog/menyu-detskoe.png',
+    'menyu-vyrubnoe': '/catalog/menyu-vyrubnoe.png',
+    'birdekeli': '/catalog/birdekeli.png',
+    'barnoe-menyu': '/catalog/barnoe-menyu.png',
+}

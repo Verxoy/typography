@@ -1,0 +1,16 @@
+{
+  "stub": true,
+  "method": "crm.lead.add",
+  "created_at": "2026-05-18T01:14:20.513275",
+  "lead_id_stub": 10002,
+  "fields": {
+    "TITLE": "Быстрый расчёт: Визитки",
+    "NAME": "mnbjb",
+    "PHONE": "yt7t7678687",
+    "EMAIL": "jkbhbhkbhjb@gmail.com",
+    "COMMENTS": "Услуга: Визитки\nЮрлицо: ООО — и и яч\nИНН: 7675756658\n--- Параметры ---\nquantity: 600\nformat: Другой\npaper: емппм\ncolors: 4+4\nurgency: Обсудить\n--- Комментарий ---\nkmm.",
+    "SOURCE_ID": "WEB"
+  },
+  "quote_request_id": 2,
+  "public_number": "QR-2026-0002"
+}

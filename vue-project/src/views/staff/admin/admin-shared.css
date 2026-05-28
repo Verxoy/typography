@@ -1,0 +1,85 @@
+.admin-h2 {
+  margin: 0 0 16px;
+  font-size: 1.35rem;
+}
+.admin-h4 {
+  margin: 16px 0 8px;
+}
+.admin-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.admin-inp {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.admin-inp--sm {
+  max-width: 160px;
+}
+.admin-inp--xs {
+  max-width: 72px;
+}
+.admin-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.admin-btn {
+  padding: 8px 16px;
+  background: #f72;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.admin-btn-sm {
+  padding: 6px 12px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.admin-textarea {
+  width: 100%;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.admin-ok {
+  color: #0a7a3e;
+}
+.admin-err {
+  color: #c00;
+}
+.admin-muted {
+  color: #666;
+  font-size: 0.9rem;
+}
+.admin-table-wrap {
+  overflow-x: auto;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}

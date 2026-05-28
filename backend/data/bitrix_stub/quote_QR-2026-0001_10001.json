@@ -1,0 +1,16 @@
+{
+  "stub": true,
+  "method": "crm.lead.add",
+  "created_at": "2026-05-18T01:11:37.897601",
+  "lead_id_stub": 10001,
+  "fields": {
+    "TITLE": "Быстрый расчёт: Визитки",
+    "NAME": "Ivan",
+    "PHONE": "+79990001122",
+    "EMAIL": "test@example.com",
+    "COMMENTS": "Услуга: Визитки\nЮрлицо: ООО — Test LLC\nИНН: 1234567890\n--- Параметры ---\nquantity: 500\nformat: 90x50\ncolors: 4+4\nurgency: Standard",
+    "SOURCE_ID": "WEB"
+  },
+  "quote_request_id": 1,
+  "public_number": "QR-2026-0001"
+}
