@@ -634,6 +634,22 @@ function isSpec(b: CatalogDetailBlock): b is Extract<CatalogDetailBlock, { type:
   .detail-gallery--many {
     grid-template-columns: 1fr;
   }
+
+  .detail-order-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-top-bar {
+    padding: 14px 12px;
+  }
+
+  .detail-order-btn {
+    font-size: 0.95rem;
+    padding: 14px 20px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

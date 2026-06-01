@@ -1,24 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
 const route = useRoute()
 const router = useRouter()
-const { user, logout, isAdministrator } = useAuth()
+const { user, logout } = useAuth()
 
-const navItems = computed(() => {
-  const items = [
-    { to: '/staff/inbox', label: 'Заявки', exact: false },
-    { to: '/staff/admin/catalog', label: 'Каталог', exact: false },
-    { to: '/staff/admin/portfolio', label: 'Готовые работы', exact: false },
-    { to: '/staff/admin/chat', label: 'Чат-бот', exact: false },
-  ]
-  if (isAdministrator.value) {
-    items.push({ to: '/staff/admin/graphic', label: 'Графический модуль', exact: false })
-  }
-  return items
-})
+const navItems = [
+  { to: '/staff/inbox', label: 'Заявки', exact: false },
+  { to: '/staff/admin/catalog', label: 'Каталог', exact: false },
+  { to: '/staff/admin/portfolio', label: 'Готовые работы', exact: false },
+  { to: '/staff/admin/chat', label: 'Чат-бот', exact: false },
+]
 
 function linkActive(path: string) {
   return route.path.startsWith(path)

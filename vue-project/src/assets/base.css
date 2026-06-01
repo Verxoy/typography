@@ -1,9 +1,9 @@
 
 
 :root {
-  /* Open Sans — заголовки, акцентные блоки (чуть «теплее», хорошо читается крупно) */
+  
   --font-heading: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  /* Roboto — основной текст, навигация, формы (нейтральный, ровный ритм строки) */
+  
   --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -49,10 +49,6 @@ p, span, li, a, label, input, textarea, button {
   padding: 0 20px;
   width: 100%;
 }
-
-/* ========================================
-   ШАПКА
-   ======================================== */
 
 .header {
   width: 100%;
@@ -182,8 +178,16 @@ p, span, li, a, label, input, textarea, button {
   flex-shrink: 0;
 }
 
-.callback-btn {
+.header-top__actions {
   grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.callback-btn {
   position: relative;
   z-index: 2;
   background: #ff7722;
@@ -203,7 +207,53 @@ p, span, li, a, label, input, textarea, button {
   background: #e66611;
 }
 
-/* Навигация */
+.callback-btn__short {
+  display: none;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.nav-toggle:hover {
+  border-color: #ff7722;
+  background: #fff8f0;
+}
+
+.nav-toggle__line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #333;
+  border-radius: 1px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.header--nav-open .nav-toggle__line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header--nav-open .nav-toggle__line:nth-child(2) {
+  opacity: 0;
+}
+
+.header--nav-open .nav-toggle__line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+
 .navigation {
   width: 100%;
   background: #e8e8e8;
@@ -303,12 +353,38 @@ p, span, li, a, label, input, textarea, button {
   background: rgba(255, 119, 34, 0.12);
 }
 
-@media (max-width: 1050px) {
+
+@media (max-width: 1050px) and (min-width: 993px) {
+  .header-top {
+    column-gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .contacts-primary .contact-item {
+    font-size: 13px;
+  }
+
+  .contacts-meta .contact-item {
+    font-size: 12px;
+  }
+
+  .callback-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+
+@media (max-width: 992px) {
   .header-top {
     grid-template-columns: 1fr auto;
     grid-template-areas:
-      'logo btn'
+      'logo actions'
       'contacts contacts';
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 10px;
+    padding: 12px 12px 10px;
   }
 
   .logo-link {
@@ -316,83 +392,131 @@ p, span, li, a, label, input, textarea, button {
     justify-self: start;
   }
 
-  .contacts-wrapper {
-    grid-area: contacts;
+  .logo {
+    width: 120px;
+  }
+
+  .header-top__actions {
+    grid-area: actions;
     grid-column: auto;
+    gap: 8px;
+  }
+
+  .callback-btn__full {
+    display: none;
+  }
+
+  .callback-btn__short {
+    display: inline;
   }
 
   .callback-btn {
-    grid-area: btn;
-    grid-column: auto;
-    justify-self: end;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-top {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'logo'
-      'contacts'
-      'btn';
-    justify-items: center;
+    padding: 10px 16px;
+    font-size: 13px;
   }
 
-  .logo-link {
-    justify-self: center;
+  .nav-toggle {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
   }
 
   .contacts-wrapper {
+    grid-area: contacts;
+    grid-column: 1 / -1;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
   }
 
   .contacts-primary,
   .contacts-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 8px 12px;
+    box-sizing: border-box;
   }
 
-  .contacts-primary {
-    padding: 12px 14px;
+  .contacts-primary::-webkit-scrollbar,
+  .contacts-meta::-webkit-scrollbar {
+    display: none;
+  }
+
+  .contacts-meta {
+    background: #fafafa;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .contacts-primary .contact-item,
+  .contacts-meta .contact-item {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .contacts-primary .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contacts-meta .icon {
+    width: 16px;
+    height: 16px;
   }
 
   .contact-item--address span {
-    white-space: normal;
-  }
-
-  .header-top {
-    padding: 12px 16px;
-  }
-
-  .callback-btn {
-    grid-area: btn;
-    width: 100%;
-    max-width: 280px;
-    justify-self: center;
-  }
-
-  .nav-container {
-    flex-wrap: wrap;
-    padding: 6px 12px;
-    gap: 4px;
-  }
-
-  .nav-item {
-    flex: 1 1 calc(33.333% - 4px);
-    min-width: calc(33.333% - 4px);
-    padding: 10px 4px;
-    font-size: 12px;
-    white-space: normal;
-    line-height: 1.25;
+    white-space: nowrap;
   }
 }
 
-/* ========================================
-   ВНУТРЕННИЕ СТРАНИЦЫ (общие)
-   ======================================== */
+@media (max-width: 480px) {
+  .header-top {
+    padding: 10px 10px 8px;
+    row-gap: 8px;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  .callback-btn {
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+
+  .nav-toggle {
+    width: 38px;
+    height: 38px;
+    padding: 8px;
+  }
+
+  .contacts-primary,
+  .contacts-meta {
+    gap: 12px;
+    padding: 7px 10px;
+  }
+
+  .contacts-primary .contact-item,
+  .contacts-meta .contact-item {
+    font-size: 12px;
+  }
+}
+
 
 .page-title {
   font-size: 42px;
@@ -533,18 +657,14 @@ p, span, li, a, label, input, textarea, button {
   margin-top: 10px;
 }
 
-/* ========================================
-   ОСНОВНОЙ КОНТЕНТ
-   ======================================== */
+
 
 .main-content {
   width: 100%;
   padding: 40px 20px;
 }
 
-/* ========================================
-   БАННЕР
-   ======================================== */
+
 
 .banner:not(.banner--hero) {
   background: linear-gradient(135deg, #ff7722 0%, #ff9955 50%, #00aa44 100%);
@@ -742,9 +862,6 @@ p, span, li, a, label, input, textarea, button {
   min-height: 120px;
 }
 
-/* ========================================
-   МОДУЛЬ ВИЗУАЛИЗАЦИИ
-   ======================================== */
 
 .visualization-section {
   margin: 40px 0;

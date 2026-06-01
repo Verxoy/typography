@@ -11,7 +11,7 @@ import type { InboxListItem, InboxTypeFilter } from '@/types/inbox'
 
 const route = useRoute()
 const router = useRouter()
-const { user, logout } = useAuth()
+const { user, logout, isAdministrator } = useAuth()
 
 const items = ref<InboxListItem[]>([])
 const loading = ref(true)
@@ -132,9 +132,9 @@ function contactPhone(row: InboxListItem) {
           <p v-if="user" class="staff-user">{{ user.first_name || user.username }}</p>
         </div>
         <div class="staff-bar-actions">
-          <router-link to="/staff/admin" class="staff-link-btn">Управление сайтом</router-link>
-          <router-link to="/quick-quote" class="staff-link-btn">Форма расчёта</router-link>
-          <router-link to="/#callback" class="staff-link-btn">Форма звонка</router-link>
+          <router-link v-if="isAdministrator" to="/staff/admin" class="staff-link-btn">
+            Управление сайтом
+          </router-link>
           <router-link to="/" class="staff-link-btn">Сайт</router-link>
           <button type="button" class="staff-link-btn" @click="doLogout">Выйти</button>
         </div>
@@ -391,5 +391,35 @@ function contactPhone(row: InboxListItem) {
 .staff-type-badge--chat {
   background: #ede7f6;
   color: #5e35b1;
+}
+
+@media (max-width: 768px) {
+  .staff-bar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .staff-main {
+    padding: 16px 12px 32px;
+  }
+
+  .staff-filters {
+    flex-direction: column;
+  }
+
+  .staff-filters input,
+  .staff-filters select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .staff-table {
+    font-size: 0.8rem;
+  }
+
+  .staff-table th,
+  .staff-table td {
+    padding: 10px 8px;
+  }
 }
 </style>

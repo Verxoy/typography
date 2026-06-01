@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Icon from '@/components/Icon.vue'
@@ -8,6 +8,7 @@ const route = useRoute()
 const router = useRouter()
 
 const aboutMenuOpen = ref(false)
+const navOpen = ref(false)
 
 const isAboutSection = computed(() => route.path.startsWith('/about'))
 
@@ -29,10 +30,26 @@ async function goToCallbackForm() {
 function closeAboutMenu() {
   aboutMenuOpen.value = false
 }
+
+function closeNav() {
+  navOpen.value = false
+  closeAboutMenu()
+}
+
+function toggleNav() {
+  navOpen.value = !navOpen.value
+}
+
+watch(
+  () => route.fullPath,
+  () => {
+    closeNav()
+  },
+)
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--nav-open': navOpen }">
     <div class="container header-top">
       <router-link to="/" class="logo-link">
         <img src="/logo.png" alt="Типография Андрея Христюбова" class="logo" />
@@ -70,15 +87,36 @@ function closeAboutMenu() {
         </div>
       </div>
 
-      <button type="button" class="callback-btn" @click="goToCallbackForm">Заказать звонок</button>
+      <div class="header-top__actions">
+        <button type="button" class="callback-btn" @click="goToCallbackForm">
+          <span class="callback-btn__full">Заказать звонок</span>
+          <span class="callback-btn__short">Звонок</span>
+        </button>
+        <button
+          type="button"
+          class="nav-toggle"
+          :aria-expanded="navOpen"
+          aria-controls="site-nav-menu"
+          @click="toggleNav"
+        >
+          <span class="nav-toggle__line" />
+          <span class="nav-toggle__line" />
+          <span class="nav-toggle__line" />
+          <span class="visually-hidden">{{ navOpen ? 'Закрыть меню' : 'Открыть меню' }}</span>
+        </button>
+      </div>
     </div>
 
-    <nav class="navigation" aria-label="Основное меню">
-      <div class="nav-container">
-        <router-link to="/" class="nav-item">Главная</router-link>
-        <router-link to="/catalog" class="nav-item">Каталог</router-link>
-        <router-link to="/technologies" class="nav-item">Технологии</router-link>
-        <router-link to="/contacts" class="nav-item">Контакты</router-link>
+    <nav
+      class="navigation"
+      :class="{ 'navigation--open': navOpen }"
+      aria-label="Основное меню"
+    >
+      <div id="site-nav-menu" class="nav-container">
+        <router-link to="/" class="nav-item" @click="closeNav">Главная</router-link>
+        <router-link to="/catalog" class="nav-item" @click="closeNav">Каталог</router-link>
+        <router-link to="/technologies" class="nav-item" @click="closeNav">Технологии</router-link>
+        <router-link to="/contacts" class="nav-item" @click="closeNav">Контакты</router-link>
 
         <div
           class="nav-item-dropdown"
@@ -89,7 +127,7 @@ function closeAboutMenu() {
             to="/about"
             class="nav-item"
             :class="{ 'router-link-active': isAboutSection }"
-            @click="closeAboutMenu"
+            @click="closeNav"
           >
             О нас
           </router-link>
@@ -104,15 +142,25 @@ function closeAboutMenu() {
               :to="link.to"
               class="nav-dropdown__link"
               role="menuitem"
-              @click="closeAboutMenu"
+              @click="closeNav"
             >
               {{ link.label }}
             </router-link>
           </div>
         </div>
 
-        <router-link to="/vacancies" class="nav-item">Вакансии</router-link>
-        <router-link to="/graphic-module" class="nav-item">Графический модуль</router-link>
+        <router-link
+          v-for="link in aboutDropdownLinks"
+          :key="`m-${link.to}`"
+          :to="link.to"
+          class="nav-item nav-item--mobile-sub"
+          @click="closeNav"
+        >
+          {{ link.label }}
+        </router-link>
+
+        <router-link to="/vacancies" class="nav-item" @click="closeNav">Вакансии</router-link>
+        <router-link to="/graphic-module" class="nav-item" @click="closeNav">Графический модуль</router-link>
       </div>
     </nav>
   </header>

@@ -100,7 +100,7 @@ export async function apiFetch<T>(
   return data as T
 }
 
-/** Отправка FormData (файлы). Content-Type не задаём — браузер выставит boundary. */
+
 export async function apiFetchFormData<T>(
   path: string,
   formData: FormData,
@@ -140,7 +140,7 @@ export async function apiFetchFormData<T>(
   return data as T
 }
 
-/** POST multipart → бинарный ответ (например, JPEG после CMYK-конвертации). */
+
 export async function apiFetchBlob(
   path: string,
   formData: FormData,

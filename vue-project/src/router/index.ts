@@ -115,29 +115,24 @@ const routes = [
   {
     path: '/staff/admin',
     redirect: { path: '/staff/admin/catalog' },
+    meta: { requiresStaff: true, requiresAdmin: true },
   },
   {
     path: '/staff/admin/catalog',
     name: 'StaffAdminCatalog',
     component: () => import('../views/staff/admin/StaffAdminCatalog.vue'),
-    meta: { requiresStaff: true },
+    meta: { requiresStaff: true, requiresAdmin: true },
   },
   {
     path: '/staff/admin/portfolio',
     name: 'StaffAdminPortfolio',
     component: () => import('../views/staff/admin/StaffAdminPortfolio.vue'),
-    meta: { requiresStaff: true },
+    meta: { requiresStaff: true, requiresAdmin: true },
   },
   {
     path: '/staff/admin/chat',
     name: 'StaffAdminChat',
     component: () => import('../views/staff/admin/StaffAdminChat.vue'),
-    meta: { requiresStaff: true },
-  },
-  {
-    path: '/staff/admin/graphic',
-    name: 'StaffAdminGraphic',
-    component: () => import('../views/staff/admin/StaffAdminGraphic.vue'),
     meta: { requiresStaff: true, requiresAdmin: true },
   },
 ]
@@ -159,7 +154,7 @@ router.beforeEach(async (to) => {
 
   if (to.meta.requiresAdmin) {
     if (!isAdministrator.value) {
-      return { path: '/staff/admin/chat' }
+      return { path: '/staff/inbox' }
     }
   }
 

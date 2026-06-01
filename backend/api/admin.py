@@ -141,3 +141,8 @@ class ChatEscalateKeywordAdmin(admin.ModelAdmin):
 class QuoteServiceConfigAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return not QuoteServiceConfig.objects.exists()
+
+
+admin.site.site_header = 'Администрирование'
+admin.site.site_title = 'Администрирование'
+admin.site.index_title = 'Панель управления'

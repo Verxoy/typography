@@ -654,4 +654,32 @@ async function submit() {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media (max-width: 768px) {
+  .quote-steps {
+    gap: 8px;
+  }
+
+  .quote-steps span {
+    flex: 1 1 calc(50% - 4px);
+    text-align: center;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .form-block-title {
+    font-size: 22px;
+  }
+
+  .quote-file-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-steps span {
+    flex: 1 1 100%;
+  }
+}
 </style>

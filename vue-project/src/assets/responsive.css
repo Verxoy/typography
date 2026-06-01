@@ -1,0 +1,312 @@
+/**
+ * Адаптивность для телефонов и планшетов.
+ * Стили только в @media — внешний вид на ПК (≥992px) не меняется.
+ * Графический модуль (.graphic-module-page, .studio-page, .gm-*) не затрагивается.
+ */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ——— Планшет ——— */
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .main-content {
+    padding: 32px 16px;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .features-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px;
+  }
+
+  .feature-item {
+    flex: 1 1 calc(50% - 14px);
+    max-width: none;
+  }
+
+  .page-title {
+    font-size: 36px;
+  }
+
+  .banner:not(.banner--hero) {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .banner:not(.banner--hero) .banner-title {
+    font-size: 28px;
+  }
+
+  .banner:not(.banner--hero) .banner-controls {
+    align-self: flex-end;
+  }
+}
+
+/* ——— Мобильное меню (навигация) ——— */
+@media (max-width: 992px) {
+  .navigation .nav-container {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 0 12px 12px;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .navigation--open .nav-container {
+    display: flex;
+  }
+
+  .navigation .nav-item {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    font-size: 15px;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .navigation .nav-item-dropdown {
+    flex: none;
+    width: 100%;
+  }
+
+  .navigation .nav-item-dropdown > .nav-item {
+    width: 100%;
+  }
+
+  .navigation .nav-dropdown {
+    display: none;
+  }
+
+  .navigation .nav-item--mobile-sub {
+    display: block;
+    padding-left: 28px;
+    font-size: 14px;
+    color: #555;
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .navigation .nav-item--mobile-sub.router-link-active {
+    color: #ff7722;
+    background: rgba(255, 119, 34, 0.1);
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-item--mobile-sub {
+    display: none !important;
+  }
+}
+
+/* ——— Телефон / узкий планшет ——— */
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .main-content {
+    padding: 24px 12px 32px;
+  }
+
+  .page-title {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
+
+  .page-back-link {
+    margin-bottom: 20px;
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+
+  .form-block {
+    padding: 24px 18px;
+    margin-bottom: 40px;
+    border-radius: 16px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .submit-button,
+  .form-actions .submit-button--secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .submit-button {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .category-card {
+    min-height: 0;
+  }
+
+  .features-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .feature-item {
+    flex: none;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .about-section {
+    padding: 40px 0;
+  }
+
+  .about-title {
+    font-size: 24px;
+  }
+
+  .about-description {
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  .visualization-block:not(.studio-footer-strip) {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .visualization-block:not(.studio-footer-strip) .visualization-text {
+    font-size: 15px;
+  }
+
+  .visualization-block:not(.studio-footer-strip) .visualization-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .banner:not(.banner--hero) {
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .banner:not(.banner--hero) .banner-title {
+    font-size: 24px;
+  }
+
+  .banner:not(.banner--hero) .banner-text {
+    max-width: none;
+  }
+
+  .promo-strip-section {
+    margin: 28px 0;
+    gap: 16px;
+  }
+
+  .quote-steps span {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .quote-radio-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .quote-service-card {
+    padding: 16px 18px;
+  }
+
+  .quote-service-card:hover {
+    transform: none;
+  }
+
+  .form-block-title {
+    font-size: 22px;
+  }
+
+  .contacts-quote-strip.visualization-text {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 26px;
+  }
+
+  .page-subtitle {
+    font-size: 15px;
+  }
+
+  .form-block {
+    padding: 20px 14px;
+  }
+
+  .chat-window {
+    width: calc(100vw - 24px);
+    max-width: 360px;
+    right: 12px;
+    left: auto;
+  }
+
+  .chatbot {
+    right: 12px;
+    bottom: 16px;
+  }
+}
+
+/* Staff: только сужение отступов, без смены десктоп-раскладки */
+@media (max-width: 768px) {
+  .staff-page {
+    padding: 20px 12px;
+  }
+
+  .staff-card {
+    padding: 24px 18px;
+    width: 100%;
+    max-width: 100%;
+  }
+}

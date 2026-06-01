@@ -59,7 +59,6 @@ function statusLabel(code: string) {
           <p v-if="user" class="staff-user">{{ user.first_name || user.username }}</p>
         </div>
         <div class="staff-bar-actions">
-          <router-link to="/quick-quote" class="staff-link-btn">Форма расчёта</router-link>
           <router-link to="/" class="staff-link-btn">Сайт</router-link>
           <button type="button" class="staff-link-btn" @click="doLogout">Выйти</button>
         </div>
